@@ -25,6 +25,33 @@
 - Also uses a **next sentence prediction** task, jointly trains text-pair representations.
 
 - BERT is the first **fine-tuning based representation model** that gets SOTA performance on both many **sentence-level** and **token-level** tasks
+- Improvement on ELMo, whose contextual representation of each token is simply the concatenation of left-to-right and right-to-left representations. Feature-based and not deeply bidirectional.
+
+#### Phases
+
+- Pre-training: model trained on unlabeled data over different pre-training tasks.
+- Fine-tuning: BERT model initialized with pretrained params, and all params are fine-tuned via labeled data from downstream tasks
+	- each downstream task has **separate fine-tune models** despite all being initialized with same pre-trained params.
+
+#### Model Architecture
+
+- **multi-layer bidirectional Transformer encoder**
+	- The Annotated Transformer: http://nlp.seas.harvard.edu/2018/04/03/attention.html
+- L (layers, number of Transformer blocks), H (hidden size), A (number of self-attention heads)
+- **BERTBase** (L=12, H=768, A=12, Total Params=110M, same size as GPT)
+- **BERTLarge** (L=24, H=1024, A=16, Total Params=340M (~ 3x))
+
+#### Input/Output Representations
+
+- To let BERT handle a variety of downstream tasks, the **input representation** can **unambiguously represent both single sentences and sentence pairs**, in a **token sequence**.
+	- **sentence** : any contiguous text sequence
+	- **sequence** : our actual input token sequence to BERT; can be 1 sentences or 2 sentences packed together (e.g. in Question Answering (Question, Answer) inputs).
+- WordPiece embeddings w/ 30,000 token vocab.
+- First token of every sequence is always a [CLS] classification token.
+- The **final hidden state corresponding to [CLS]** is used as the **aggregate sequence representation for classification tasks**.
+- 
+
+
 
 ## Attention
 
